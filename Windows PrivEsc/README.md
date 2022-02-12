@@ -403,4 +403,57 @@ Once you have generated and moved the file to the correct location on the target
 sc start unquotedsvc
 ```
 
+--------------------------------------------------------------
 
+**Tokens**
+
+Windows uses tokens to ensure that accounts have the right privileges to carry out particular actions.
+Account tokens are assigned to an account when users log in or are authenticated. This is usually done by LSASS.exe
+
+This access token consists of:
+
+1.  user SIDs(security identifier)
+2.  group SIDs
+3.  privileges
+
+There are two types of access tokens:
+1.  primary access tokens: those associated with a user account that are generated on log on
+2.  impersonation tokens: these allow a particular process(or thread in a process) to gain access to resources using the token of another (user/client) process
+
+The privileges of an account allow a user to carry out particular actions. Here are the most commonly abused privileges:
+1.  SeImpersonatePrivilege
+2.  SeAssignPrimaryPrivilege
+3.  SeTcbPrivilege
+4.  SeBackupPrivilege
+5.  SeRestorePrivilege
+6.  SeCreateTokenPrivilege
+7.  SeLoadDriverPrivilege
+8.  SeTakeOwnershipPrivilege
+9.  SeDebugPrivilege
+
+View all the privileges using whoami /priv
+```bash
+whoami /priv
+```
+
+You can see that two privileges(SeDebugPrivilege, SeImpersonatePrivilege) are enabled. Let's use the incognito module that will allow us to exploit this vulnerability. 
+```bash
+load incognito
+```
+
+To check which tokens are available, enter the 
+```bash
+list_tokens -g
+```
+
+We can see that the BUILTIN\Administrators token is available.
+
+```bash
+impersonate_token "BUILTIN\Administrators" 
+```
+
+Even though you have a higher privileged token you may not actually have the permissions of a privileged user (this is due to the way Windows handles permissions - it uses the Primary Token of the process and not the impersonated token to determine what the process can or cannot do).
+
+Ensure that you migrate to a process with correct permissions
+
+The safest process to pick is the services.exe process.
