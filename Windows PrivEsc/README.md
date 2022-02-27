@@ -457,3 +457,11 @@ Even though you have a higher privileged token you may not actually have the per
 Ensure that you migrate to a process with correct permissions
 
 The safest process to pick is the services.exe process.
+
+
+or 
+
+https://github.com/dievus/printspoofer/raw/master/PrintSpoofer.exe
+
+https://github.com/itm4n/PrintSpoofer
+
