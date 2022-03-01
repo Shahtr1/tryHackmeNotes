@@ -18,7 +18,7 @@
 
 **getting pattern offset**
 ```bash
-/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -q 35714234
+/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -q 39654138
 ```
 or
 ```bash
@@ -62,5 +62,10 @@ Make a note of the address to which the ESP register points and use it in the fo
 
 ```bash
 !mona compare -f C:\mona\oscp\bytearray.bin -a <address>
+```
+
+**Check modules**
+```bash
+!mona modules
 ```
 

