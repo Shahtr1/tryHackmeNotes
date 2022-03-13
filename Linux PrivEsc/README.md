@@ -4,6 +4,14 @@
 
 --------------------------------------
 
+**Upgrade shell**
+
+```bash
+python3 -c 'import pty;pty.spawn("/bin/bash")'
+```
+
+-----------------------------------------------
+
 **Enumeration**
 
 Commands:

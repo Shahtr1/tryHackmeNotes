@@ -18,7 +18,7 @@
 
 **getting pattern offset**
 ```bash
-/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -q 39654138
+/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -q 35724134
 ```
 or
 ```bash
