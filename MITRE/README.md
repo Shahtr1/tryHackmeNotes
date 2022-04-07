@@ -25,4 +25,23 @@
 
  Within this project, selected security professionals were tasked to emulated adversarial TTPs against a network, and data was collected from the attacks on this network. The gathered data helped construct the beginning pieces of what we know today as the ATT&CK® framework.
 
+ ---------------------------------------------
+
+**CAR Knowledge Base**
+
+The official definition of CAR is "The MITRE Cyber Analytics Repository (CAR) is a knowledge base of analytics developed by MITRE 
+
+
+**CAR-2020-09-001: Scheduled Task - FileAccess**
+
+In order to gain persistence, privilege escalation, or remote execution, an adversary may use the Windows Task Scheduler to schedule a command to be run at a specified time, date, and even host.
+Task Scheduler stores tasks as files in two locations - C:\Windows\Tasks (legacy) or C:\Windows\System32\Tasks. 
+Accordingly, this analytic looks for the creation of task files in these two locations.
+
+
+
+
+
+
+
  
