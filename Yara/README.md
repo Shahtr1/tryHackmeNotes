@@ -116,3 +116,46 @@ yara myfirstrule.yar somefile
 	}
 	```
 
+-------------------------------------------------------------
+
+**LOKI**
+
+LOKI is a free open source IOC (Indicator of Compromise) scanner created/written by Florian Roth.
+
+Detection is based on 4 methods:
+
+1.	File Name IOC Check
+2.	Yara Rule Check (we are here)
+3.	Hash Check
+4.	C2 Back Connect Check
+
+
+LOKI can be used on both Windows and Linux systems.
+
+-----------------------------------------------------------------
+
+**yarGen**
+
+yarGen is a generator for YARA rules.
+
+The main principle is the creation of yara rules from strings found in malware files while removing all strings that also appear in goodware files.
+
+Therefore yarGen includes a big goodware strings and opcode database as ZIP archives that have to be extracted before the first use.
+
+ If you are running yarGen on your own system, you need to update it first by running the following command: 
+```bash
+ python3 yarGen.py --update
+```
+
+To use yarGen to generate a Yara rule for file 2, you can run the following command:
+
+```bash
+python3 yarGen.py -m /home/cmnatic/suspicious-files/file2 --excludegood -o /home/cmnatic/suspicious-files/file2.yar
+```
+
+A brief explanation of the parameters above:
+
+-	`-m` is the path to the files you want to generate rules for
+-	`--excludegood` force to exclude all goodware strings (these are strings found in legitimate software and can increase false positives)
+-	`-o` location & name you want to output the Yara rule
+
